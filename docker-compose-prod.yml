@@ -4,7 +4,7 @@ services:
     build:
       context: ./mongo
     ports:
-      - 27017:27017
+      - "27017:27017"
   nodejs:
     build:
       context: ./interface-nodejs
@@ -21,3 +21,10 @@ services:
     links:
       -  mongo
     restart: unless-stopped
+    tty: true
+  broker:
+    build:
+      context: ./broker-mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
