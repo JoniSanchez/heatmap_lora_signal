@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
   mqttsubscriber:
     build:
-      context: ./subcriber-mqtt
+      context: ./subscriber-mqtt
     ports:
       - "8083:8083"
     links:

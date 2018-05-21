@@ -7,6 +7,9 @@
     "Matteo Collina <matteo.collina@gmail.com> (https://github.com/mcollina)"
   ],
   "keywords": [
+    "connect",
+    "mongo",
+    "mongodb",
     "mqtt",
     "publish/subscribe",
     "publish",
@@ -75,7 +78,8 @@
     "reinterval": "^1.1.0",
     "split2": "^2.1.1",
     "websocket-stream": "^5.1.2",
-    "xtend": "^4.0.1"
+    "xtend": "^4.0.1",
+    "mongodb": "^2.0.36"
   },
   "devDependencies": {
     "@types/node": "^8.10.14",
@@ -101,7 +105,8 @@
     "uglify-js": "^3.3.24",
     "ws": "^3.3.3",
     "zuul": "^3.11.1",
-    "zuul-ngrok": "^4.0.0"
+    "zuul-ngrok": "^4.0.0",
+    "mongoose": "^4.1.2"
   },
   "standard": {
     "env": [

@@ -11,6 +11,7 @@ sleep 3
 echo "=> Creating an ${USER} user with a ${_word} password in MongoDB" 
 /usr/bin/mongo $DATABASE --eval  "db.createUser({ user: '$USER', pwd: '$PASS', roles:['dbOwner']});"
 /usr/bin/mongo admin --eval  "db.createUser({ user: '$USER', pwd: '$PASS', roles:['root']});"
+/usr/bin/mongo $DATABASE --eval  "db.createCollection('documents');"
 mongo admin -u $USER -p $PASS << EOF 
 use test; 
 db.createUser({ user: '$USER' , pwd: '$PASS', roles: ['dbOwner']}); 
@@ -29,4 +30,4 @@ echo ""
 echo "Please remember to change the above password as soon as possible!" 
 echo "========================================================================"
 
-mongod --bind_ip_all --smallfiles --auth
+mongod --bind_ip_all --smallfiles #--auth
