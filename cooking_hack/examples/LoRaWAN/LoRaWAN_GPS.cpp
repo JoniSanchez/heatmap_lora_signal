@@ -1,33 +1,6 @@
-/*  
- *  ------ P2P Code Example -------- 
- *  
- *  Explanation: This example shows how to configure the module
- *  for P2P mode and the corresponding parameters. After this, 
- *  the example shows how to send packets to other radio modules
- *  which must be set with the same radio settings
- *  
- *  Copyright (C) 2015 Libelium Comunicaciones Distribuidas S.L. 
- *  http://www.libelium.com 
- *  
- *  This program is free software: you can redistribute it and/or modify  
- *  it under the terms of the GNU General Public License as published by  
- *  the Free Software Foundation, either version 3 of the License, or  
- *  (at your option) any later version.  
- *   
- *  This program is distributed in the hope that it will be useful,  
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of  
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the  
- *  GNU General Public License for more details.  
- *   
- *  You should have received a copy of the GNU General Public License  
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *  
- *  Version:           0.4
- *  Design:            David Gascon
- *  Implementation:    Luismi Marti, Ruben Martin  
- */
-
+/*LIB TO LORA*/
 #include "arduPiLoRaWAN.h"
+#include "arduPiUtils.h"
 /*LIB TO GPS*/
 #include <gps.h>
 #include <stdio.h>
@@ -371,16 +344,33 @@ uint8_t radioModuleSetup()
   return status;
 }
 
+void str2hex(char* strIndata, char* strOutdata){
+    for (int i=0;i<strlen(strIndata); ++i) {
+         sprintf (&strOutdata[i*2], "%02X", strIndata[i]);
+    }
+}
 
 //////////////////////////////////////////////
 // Main loop setup() and loop() declarations
 //////////////////////////////////////////////
 
-int main (){
+int main(int argc, char *argv[]){
 	int rc;
 	struct timeval tv;
 	struct gps_data_t gps_data;
-
+	char aux[40] = "";
+	char params[10] = "";
+	
+	if (argc != 5){										  
+		printf("Error en la entrada de argumentos.\n");
+		exit(1);
+	}
+	
+    frequency = atoi(argv[2]);
+    strncpy(spreading_factor, argv[1], 10);
+    strncpy(coding_rate, argv[4], 10);
+    bandwidth = atoi(argv[3]);
+	
 	if ((rc = gps_open("localhost", "2947", &gps_data)) == -1) {
     		printf("code: %d, reason: %s\n", rc, gps_errstr(rc));
     		return EXIT_FAILURE;
@@ -400,9 +390,19 @@ int main (){
                	 			(gps_data.fix.mode == MODE_2D || gps_data.fix.mode == MODE_3D) &&
                 			!isnan(gps_data.fix.latitude) &&
                 			!isnan(gps_data.fix.longitude)) {
-                    				strcpy(data, "989898987878");
+                			    sprintf(params, "%f", gps_data.fix.latitude);
+                                strncat(params, ";", 20);
+                                strncpy(aux, params, 20);
+                                sprintf(params, "%f", gps_data.fix.longitude);
+                                strncat(params, ";", 20);
+                                strncat(aux, params, 20); 
+                                sprintf(params, "%f", gps_data.fix.altitude);
+                                strncat(params, ";", 20);
+                                strncat(aux, params, 20);
+                				str2hex(aux, data);
+								printf("\n%s\n", data); 
                    		 		//gettimeofday(&tv, NULL); EDIT: tv.tv_sec isn't actually the timestamp!
-                    				printf("latitude: %f, longitude: %f, altitude: %f, speed: %f, timestamp: %lf\n", gps_data.fix.latitude, gps_data.fix.longitude, gps_data.fix.altitude, gps_data.fix.speed, gps_data.fix.time); //EDIT: Replaced tv.tv_sec with gps_data.fix.time
+                    			printf("latitude: %f, longitude: %f, altitude: %f, speed: %f, timestamp: %lf\n", gps_data.fix.latitude, gps_data.fix.longitude, gps_data.fix.altitude, gps_data.fix.speed, gps_data.fix.time); //EDIT: Replaced tv.tv_sec with gps_data.fix.time
             			} else {
                 			printf("no GPS data available\n");
             			}

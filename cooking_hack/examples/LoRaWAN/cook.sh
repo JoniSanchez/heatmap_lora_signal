@@ -105,7 +105,7 @@ if [ "$1" != "-clean" ]; then
     if [ "$1" != "" ]; then
     echo "Compiling Example..."
        
-    g++ -lrt -lpthread -lstdc++ "$1" \
+    g++ -lm -lgps -lrt -lpthread -lstdc++ "$1" \
       "$LIBRARY_DIR/arduPiLoRaWAN.o" \
       "$ARDUPIAPI_DIR/arduPiUART.o" \
       "$ARDUPIAPI_DIR/arduPiUtils.o" \
