@@ -1,0 +1,8 @@
+version: '3'
+services:
+  broker:
+    build:
+      context: ./
+    ports:
+      - 1883:1883
+      - 9001:9001

@@ -1,0 +1,8 @@
+version: '3'
+services:
+  nodejs:
+    build:
+      context: ./
+    ports:
+      - "8082:8082"
+    restart: unless-stopped

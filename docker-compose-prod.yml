@@ -13,11 +13,9 @@ services:
     links:
       -  mongo
     restart: unless-stopped
-  mqttsubscriber:
+  subscriber:
     build:
       context: ./subscriber-mqtt
-    ports:
-      - "8083:8083"
     links:
       -  mongo
     restart: unless-stopped

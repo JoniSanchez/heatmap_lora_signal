@@ -1,0 +1,32 @@
+const express = require('express');
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/lora";
+
+// Constants
+const PORT = 8082;
+const HOST = '0.0.0.0';
+
+// App
+const app = express();
+app.use(express.static('public'));
+app.get('/', (req, res) => {
+  MongoClient.connect(url, function(err, db) {
+    if(!err) {
+      console.log("We are connected");
+    }
+    if (db != null){
+      var dbo = db.db("lora");
+      dbo.collection('documents').find({}).toArray(function(errr, result) {
+        if (errr) throw errr;
+        console.log(result);
+        res.send("test");
+      });
+    }
+  });
+
+  //res.sendFile( __dirname + "/" + "public/index.htm" );
+});
+
+// Start server
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);

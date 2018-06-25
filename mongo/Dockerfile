@@ -5,5 +5,7 @@ ENV MONGODB_DATABASE=lora
 ENV MONGODB_PASS=lora
 
 COPY /initialMongo.sh /initialMongo.sh
-    
-CMD ["/initialMongo.sh"] 
+
+RUN chmod 755 /initialMongo.sh
+
+CMD ["/initialMongo.sh"]
