@@ -13,6 +13,8 @@ services:
     links:
       -  mongo
     restart: unless-stopped
+    depends_on:
+      - mongo
   subscriber:
     build:
       context: ./subscriber-mqtt

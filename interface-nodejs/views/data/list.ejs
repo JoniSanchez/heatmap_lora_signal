@@ -1,0 +1,92 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ../layouts/header.ejs %>
+
+	<!--
+		Using FOREACH LOOP for the users array
+		
+		myArray.forEach(function(el, index) {
+			// el - current element, i - index
+		});
+	-->	
+	/*<% if (data) { %>
+	<% data.forEach(function(lora){ %>
+		<tr>
+			<td><%= lora.name %></td>
+			<td><%= lora.age %></td>
+			<td><%= lora.email %></td>
+			<td>
+			</td>
+		</tr>
+	<% }) %>
+	<% } %>*/
+
+    <script>
+
+      // This example requires the Visualization library. Include the libraries=visualization
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
+
+      var map, heatmap;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: {lat: 40.153067, lng: -3.633310},
+          mapTypeId: 'satellite'
+        });
+
+        heatmap = new google.maps.visualization.HeatmapLayer({
+          data: getPoints(),
+          map: map
+        });
+      }
+
+      function toggleHeatmap() {
+        heatmap.setMap(heatmap.getMap() ? null : map);
+      }
+
+      function changeGradient() {
+        var gradient = [
+          'rgba(0, 255, 255, 0)',
+          'rgba(0, 255, 255, 1)',
+          'rgba(0, 191, 255, 1)',
+          'rgba(0, 127, 255, 1)',
+          'rgba(0, 63, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 223, 1)',
+          'rgba(0, 0, 191, 1)',
+          'rgba(0, 0, 159, 1)',
+          'rgba(0, 0, 127, 1)',
+          'rgba(63, 0, 91, 1)',
+          'rgba(127, 0, 63, 1)',
+          'rgba(191, 0, 31, 1)',
+          'rgba(255, 0, 0, 1)'
+        ]
+        heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+      }
+
+      function changeRadius() {
+        heatmap.set('radius', heatmap.get('radius') ? null : 20);
+      }
+
+      function changeOpacity() {
+        heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+      }
+
+      
+      function getPoints() {
+        return [
+        <% if (data) { %>
+			<% data.forEach(function(parameter){ %>
+          {location: new google.maps.LatLng(<%= parameter.latitude %>, <%= parameter.longitude %>), weight: <%= parameter.intensity %>},
+        	<% }) %>
+		<% } %>
+          {location: new google.maps.LatLng(40.153083, -3.633245), weight: 0}
+        ];
+      }
+    </script>
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

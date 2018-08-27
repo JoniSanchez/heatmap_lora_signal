@@ -1,7 +1,7 @@
 var mqtt = require('./mqtt.js')
 var client = mqtt.connect('http://localhost');
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/lora";
+var url = "mongodb://mongo:27017/lora";
 
 client.on('connect', function () {
   client.subscribe('#');

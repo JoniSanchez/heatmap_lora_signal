@@ -1,39 +1,35 @@
 var express = require("express"),
     app = express(),
     bodyParser  = require("body-parser"),
-    methodOverride = require("method-override"),
-    mongoose = require('mongoose');
-
-// Connection to DB
-mongoose.connect('mongodb://localhost/lora', function(err, res) {
-  if(err) throw err;
-  console.log('Connected to Database');
-});
+    methodOverride = require("method-override");
+//var expressMongoDb = require('express-mongo-db');
+var expressValidator = require('express-validator');
+var flash = require('express-flash');
 
 // Middlewares
-  
+
+//app.use(expressMongoDb('mongodb://localhost:27017/lora'));
+app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
+app.use(expressValidator());
 
+app.use(methodOverride(function (req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}))
 
 // Import Models and controllers
-var models     = require('./models/datashow')(app, mongoose);
-var DataShowCtrl = require('./controllers/datashow');
 var router = express.Router();
-
-//ROUTE
-router.get('/', function(req, res) {
-   res.send("Hello World!");
-});
-app.use(router);
+var data = require('./routes/data')
 
 // API routes
-var datashows = express.Router();
-
-datashows.route('/datashow').get(DataShowCtrl.findAllData);
-
-app.use('/api', datashows);
+app.use('/', data)
 
 // Start server
 app.listen(8082, function() {
