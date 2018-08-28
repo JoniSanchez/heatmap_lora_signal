@@ -16,8 +16,8 @@ uint8_t sock = SOCKET0;
 // define radio settings
 //////////////////////////////////////////////
 uint8_t power = 15;
-uint32_t frequency = 868100000;
-char spreading_factor[] = "sf12";
+uint32_t frequency = 868000000;
+char spreading_factor[] = "sf7";
 char coding_rate[] = "4/5";
 uint16_t bandwidth = 125;
 char crc_mode[] = "on";
@@ -311,7 +311,7 @@ uint8_t radioModuleSetup()
   //////////////////////////////////////////////
 
   // Set CRC
-  e = LoRaWAN.setRadioCRC(crc_mode);
+  e = LoRaWAN.setRadioCRC("on");
 
   // Check status
   if (e == 0)
