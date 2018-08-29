@@ -14,6 +14,7 @@ deploy-configure-lora:  ## Frist compile to Lora
 
 # Send Packages Lora with GPS
 send-packages-lora-gps:  ## Send Packages Lora with GPS
+	sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
 	./cook.sh LoRaWAN_GPS.cpp
 	sudo ./LoRaWAN_GPS.cpp_exe ${SPREADING_FACTOR} ${FRECUENCY} ${BANDWIDTH} ${CODING_RATE}
 
