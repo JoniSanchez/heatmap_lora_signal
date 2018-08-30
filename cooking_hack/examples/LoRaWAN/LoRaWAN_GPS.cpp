@@ -26,9 +26,6 @@ char crc_mode[] = "on";
 // define functions
 uint8_t radioModuleSetup(void);
 
-// define data to send
-char data[] = "989898987877";
-
 // variable
 uint8_t error;
 
@@ -52,7 +49,7 @@ void setup()
 }
 
 
-void loop() 
+void loop(char* data) 
 {
   // Send packet
   error = LoRaWAN.sendRadio(data);
@@ -355,6 +352,7 @@ void str2hex(char* strIndata, char* strOutdata){
 //////////////////////////////////////////////
 
 int main(int argc, char *argv[]){
+	char data[] = "000000000000000000000000000000";
 	int rc;
 	struct timeval tv;
 	struct gps_data_t gps_data;
@@ -408,7 +406,7 @@ int main(int argc, char *argv[]){
             			}
         		}
     		}
-		loop();
+		loop(data);
 	}
 	return (0);
 }

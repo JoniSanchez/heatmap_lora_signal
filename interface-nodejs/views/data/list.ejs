@@ -13,7 +13,7 @@ including header content which is common for all pages
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
-          center: {lat: 40.153067, lng: -3.633310},
+          center: {lat: 41.153067, lng: -3.633310},
           mapTypeId: 'satellite'
         });
 
@@ -63,7 +63,7 @@ including header content which is common for all pages
           {location: new google.maps.LatLng(<%= parameter.latitude %>, <%= parameter.longitude %>), weight: <%= parameter.intensity %>},
         	<% }) %>
 		<% } %>
-          {location: new google.maps.LatLng(40.153083, -3.633245), weight: 0}
+          {location: new google.maps.LatLng(42.153083, -3.633245), weight: 0}
         ];
       }
     </script>
