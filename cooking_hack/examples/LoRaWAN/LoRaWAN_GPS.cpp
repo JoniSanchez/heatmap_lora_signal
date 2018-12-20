@@ -13,332 +13,247 @@
 uint8_t sock = SOCKET0;
 //////////////////////////////////////////////
 
-// define radio settings
-//////////////////////////////////////////////
-uint8_t power = 15;
-uint32_t frequency = 868000000;
-char spreading_factor[] = "sf7";
-char coding_rate[] = "4/5";
-uint16_t bandwidth = 125;
-char crc_mode[] = "on";
-//////////////////////////////////////////////
+// Device parameters for Back-End registration
+////////////////////////////////////////////////////////////
+char DEVICE_EUI[]  = "0102030405060708";
+char DEVICE_ADDR[] = "05060708";
+char NWK_SESSION_KEY[] = "01020304050607080910111213141516";
+char APP_SESSION_KEY[] = "000102030405060708090A0B0C0D0E0F";
+////////////////////////////////////////////////////////////
 
-// define functions
-uint8_t radioModuleSetup(void);
+// Define port to use in Back-End: from 1 to 223
+uint8_t PORT = 3;
+
+// Define data payload to send (maximum is up to data rate)
+//char data[] = "0102030405060708090A0B0C0D0E0F";
 
 // variable
 uint8_t error;
 
 void setup() 
 {
-  printf("Radio P2P example - Sending packets\n\n");
+  printf("LoRaWAN example - Send Unconfirmed packets (no ACK)\n");
 
-  // module setup
-  error = radioModuleSetup();
-  
-  // Check status
-  if (error == 0)
-  {
-    printf("Module configured OK\n");     
-  }
-  else 
-  {
-    printf("Module configured ERROR\n");     
-  }  
-
-}
+  printf("------------------------------------\n");
+  printf("Module configuration\n");
+  printf("------------------------------------\n\n");
 
 
-void loop(char* data) 
-{
-  // Send packet
-  error = LoRaWAN.sendRadio(data);
-  
-  // Check status
-  if (error == 0)
-  {
-    printf("--> Packet sent OK\n");
-  }
-  else 
-  {
-    printf("Error waiting for packets. error = %d\n", error);  
-  }
-  
-  delay(5000);
-}
-
-
-/***********************************************************************************
-*
-* radioModuleSetup()
-*
-*   This function includes all functions related to the module setup and configuration
-*   The user must keep in mind that each time the module powers on, all settings are set
-*   to default values. So it is better to develop a specific function including all steps
-*   for setup and call it everytime the module powers on.
-*
-*
-***********************************************************************************/
-uint8_t radioModuleSetup()
-{ 
-  uint8_t status = 0;
-  uint8_t e = 0;
-  
   //////////////////////////////////////////////
-  // 1. switch on
+  // 1. Switch on
   //////////////////////////////////////////////
 
-  e = LoRaWAN.ON(sock);
+  error = LoRaWAN.ON(sock);
 
   // Check status
-  if (e == 0)
+  if( error == 0 ) 
   {
     printf("1. Switch ON OK\n");     
   }
   else 
   {
-    printf("1. Switch ON error = %d\n",e); 
-    status = 1;
+    printf("1. Switch ON error = %d\n", error); 
   }
-  printf("-------------------------------------------------------\n");
-
 
 
   //////////////////////////////////////////////
-  // 2. Enable P2P mode
+  // 2. Set Device EUI
   //////////////////////////////////////////////
 
-  e = LoRaWAN.macPause();
+  error = LoRaWAN.setDeviceEUI(DEVICE_EUI);
 
   // Check status
-  if (e == 0)
+  if( error == 0 ) 
   {
-    printf("2. P2P mode enabled OK\n");
+    printf("2. Device EUI set OK\n");     
   }
   else 
   {
-    printf("2. Enable P2P mode error = %d\n", e);
-    status = 1;
+    printf("2. Device EUI set error = %d\n", error); 
   }
-  printf("-------------------------------------------------------\n");
-
 
 
   //////////////////////////////////////////////
-  // 3. Set/Get Radio Power
+  // 3. Set Device Address
   //////////////////////////////////////////////
 
-  // Set power
-  e = LoRaWAN.setRadioPower(power);
+  error = LoRaWAN.setDeviceAddr(DEVICE_ADDR);
 
   // Check status
-  if (e == 0)
+  if( error == 0 ) 
   {
-    printf("3.1. Set Radio Power OK\n");
+    printf("3. Device address set OK\n");     
   }
   else 
   {
-    printf("3.1. Set Radio Power error = %d\n", e);
-    status = 1;
+    printf("3. Device address set error = %d\n", error); 
   }
-
-  // Get power
-  e = LoRaWAN.getRadioPower();
-
-  // Check status
-  if (e == 0) 
-  {
-    printf("3.2. Get Radio Power OK. "); 
-    printf("Power: %d\n",LoRaWAN._radioPower);
-  }
-  else 
-  {
-    printf("3.2. Get Radio Power error = %d\n", e); 
-    status = 1;
-  }
-  printf("-------------------------------------------------------\n");
-
 
 
   //////////////////////////////////////////////
-  // 4. Set/Get Radio Frequency
+  // 4. Set Network Session Key
   //////////////////////////////////////////////
-
-  // Set frequency
-  e = LoRaWAN.setRadioFreq(frequency);
+ 
+  error = LoRaWAN.setNwkSessionKey(NWK_SESSION_KEY);
 
   // Check status
-  if (e == 0)
+  if( error == 0 ) 
   {
-    printf("4.1. Set Radio Frequency OK\n");
+    printf("4. Network Session Key set OK\n");     
   }
   else 
   {
-    printf("4.1. Set Radio Frequency error = %d\n", error);
-    status = 1;
+    printf("4. Network Session Key set error = %d\n",error); 
   }
-
-  // Get frequency
-  e = LoRaWAN.getRadioFreq();
-
-  // Check status
-  if (e == 0) 
-  {
-    printf("4.2. Get Radio Frequency OK. "); 
-    printf("Frequency: %d\n", LoRaWAN._radioFreq);
-  }
-  else 
-  {
-    printf("4.2. Get Radio Frequency error = %d\n", e); 
-    status = 1;
-  }
-  printf("-------------------------------------------------------\n");
-
 
 
   //////////////////////////////////////////////
-  // 5. Set/Get Radio Spreading Factor (SF)
+  // 5. Set Application Session Key
   //////////////////////////////////////////////
 
-  // Set SF
-  e = LoRaWAN.setRadioSF(spreading_factor);
+  error = LoRaWAN.setAppSessionKey(APP_SESSION_KEY);
 
   // Check status
-  if (e == 0)
+  if( error == 0 ) 
   {
-    printf("5.1. Set Radio SF OK\n");
+    printf("5. Application Session Key set OK\n");     
   }
   else 
   {
-    printf("5.1. Set Radio SF error = %e\n", e);
-    status = 1;
+    printf("5. Application Session Key set error = %d\n", error); 
   }
-
-  // Get SF
-  e = LoRaWAN.getRadioSF();
-
-  // Check status
-  if (e == 0) 
-  {
-    printf("5.2. Get Radio SF OK. "); 
-    printf("Spreading Factor: %s\n", LoRaWAN._radioSF);
-  }
-  else 
-  {
-    printf("5.2. Get Radio SF error = %d\n", e); 
-    status = 1;
-  }
-  printf("-------------------------------------------------------\n");
-
 
 
   //////////////////////////////////////////////
-  // 6. Set/Get Radio Coding Rate (CR)
+  // 6. Save configuration
+  //////////////////////////////////////////////
+  
+  error = LoRaWAN.saveConfig();
+
+  // Check status
+  if( error == 0 ) 
+  {
+    printf("6. Save configuration OK\n");     
+  }
+  else 
+  {
+    printf("6. Save configuration error = %d\n", error);
+  }
+
+
+  printf("\n------------------------------------\n");
+  printf("Module configured\n");
+  printf("------------------------------------\n\n");
+  
+  LoRaWAN.getDeviceEUI();
+  printf("Device EUI: %s\n", LoRaWAN._devEUI);
+  
+  LoRaWAN.getDeviceAddr();
+  printf("Device Address: %s\n\n", LoRaWAN._devAddr);
+}
+
+
+
+void loop(char* data) 
+{
+  
+  //////////////////////////////////////////////
+  // 1. Switch on
   //////////////////////////////////////////////
 
-  // Set CR
-  e = LoRaWAN.setRadioCR(coding_rate);
+  error = LoRaWAN.ON(sock);
+
 
   // Check status
-  if (e == 0)
+  if( error == 0 ) 
   {
-    printf("6.1. Set Radio CR OK\n");
+    printf("1. Switch ON OK\n");     
   }
   else 
   {
-    printf("6.1. Set Radio CR error = %d\n", e);
-    status = 1;
+    printf("1. Switch ON error = %d\n", error);
   }
+  
+  
+  //////////////////////////////////////////////
+  // 2. Join network
+  //////////////////////////////////////////////
 
-  // Get CR
-  e = LoRaWAN.getRadioCR();
+  error = LoRaWAN.joinABP();
 
   // Check status
-  if (e == 0) 
+  if( error == 0 ) 
   {
-    printf("6.2. Get Radio CR OK. "); 
-    printf("Coding Rate: %s\n",LoRaWAN._radioCR);
+    printf("2. Join network OK\n");     
+
+    //////////////////////////////////////////////
+    // 3. Send unconfirmed packet 
+    //////////////////////////////////////////////
+    error = LoRaWAN.sendUnconfirmed(PORT, data);
+  
+    // Error messages:
+    /*
+     * '6' : Module hasn't joined a network
+     * '5' : Sending error
+     * '4' : Error with data length	  
+     * '2' : Module didn't response
+     * '1' : Module communication error   
+     */
+    // Check status
+    if( error == 0 ) 
+    {
+      printf("3. Send Unconfirmed packet OK\n");     
+      if (LoRaWAN._dataReceived == true)
+      { 
+        printf("   There's data on port number %d.\r\n", LoRaWAN._port);
+        printf("   Data: %s\n", LoRaWAN._data);
+      }
+    }
+    else 
+    {
+      printf("3. Send Unconfirmed packet error = %d\n", error); 
+    }
   }
   else 
   {
-    printf("6.2. Get Radio CR error = %d\n", e); 
-    status = 1;
+    printf("2. Join network error = %d\n",error);
   }
-  printf("-------------------------------------------------------\n");
 
+  
+  //////////////////////////////////////////////
+  // 4. Clean channels
+  //////////////////////////////////////////////
+  error = LoRaWAN.reset();
+
+  // Reset channels
+  if( error == 0 ) 
+  {
+    printf("4. Clean channels OK\n");     
+  }
+  else 
+  {
+    printf("4. Clean channels error = %d\n", error); 
+  }
 
 
   //////////////////////////////////////////////
-  // 7. Set/Get Radio Bandwidth (BW)
+  // 5. Switch off
   //////////////////////////////////////////////
-
-  // Set BW
-  e = LoRaWAN.setRadioBW(bandwidth);
+  error = LoRaWAN.OFF(sock);
 
   // Check status
-  if (e == 0)
+  if( error == 0 ) 
   {
-    printf("7.1. Set Radio BW OK\n");
+    printf("5. Switch OFF OK\n");     
   }
   else 
   {
-    printf("7.1. Set Radio BW error = %d\n", e);
+    printf("5. Switch OFF error = %d\n",error); 
   }
-
-  // Get BW
-  e = LoRaWAN.getRadioBW();
-
-  // Check status
-  if (e == 0) 
-  {
-    printf("7.2. Get Radio BW OK. "); 
-    printf("Bandwidth: %u\n", LoRaWAN._radioBW);
-  }
-  else 
-  {
-    printf("7.2. Get Radio BW error = %d\n", e); 
-    status = 1;
-  }
-  printf("-------------------------------------------------------\n");
-
-
-
-  //////////////////////////////////////////////
-  // 8. Set/Get Radio CRC mode
-  //////////////////////////////////////////////
-
-  // Set CRC
-  e = LoRaWAN.setRadioCRC("on");
-
-  // Check status
-  if (e == 0)
-  {
-    printf("8.1. Set Radio CRC mode OK\n");
-  }
-  else 
-  {
-    printf("8.1. Set Radio CRC mode error = %d\n", e);
-    status = 1;
-  }
-
-  // Get CRC
-  e = LoRaWAN.getRadioCRC();
-
-  // Check status
-  if (e == 0) 
-  {
-    printf("8.2. Get Radio CRC mode OK. "); 
-    printf("CRC status: %u\n",LoRaWAN._crcStatus);
-  }
-  else 
-  {
-    printf("8.2. Get Radio CRC mode error = %e\n", e); 
-    status = 1;
-  }
-  printf("-------------------------------------------------------\n");
-
-
-  return status;
+  
+  
+  printf("\n");
+  delay(5000);
 }
 
 void str2hex(char* strIndata, char* strOutdata){
@@ -351,7 +266,7 @@ void str2hex(char* strIndata, char* strOutdata){
 // Main loop setup() and loop() declarations
 //////////////////////////////////////////////
 
-int main(int argc, char *argv[]){
+int main (){
 	char data[] = "000000000000000000000000000000";
 	int rc;
 	struct timeval tv;
@@ -359,15 +274,6 @@ int main(int argc, char *argv[]){
 	char aux[40] = "";
 	char params[10] = "";
 	
-	if (argc != 5){										  
-		printf("Error en la entrada de argumentos.\n");
-		exit(1);
-	}
-	
-    frequency = atoi(argv[2]);
-    strncpy(spreading_factor, argv[1], 10);
-    strncpy(coding_rate, argv[4], 10);
-    bandwidth = atoi(argv[3]);
 	
 	if ((rc = gps_open("localhost", "2947", &gps_data)) == -1) {
     		printf("code: %d, reason: %s\n", rc, gps_errstr(rc));
@@ -398,8 +304,6 @@ int main(int argc, char *argv[]){
                                 strncat(params, ";", 20);
                                 strncat(aux, params, 20);
                 				str2hex(aux, data);
-								printf("\n%s\n", data); 
-                   		 		//gettimeofday(&tv, NULL); EDIT: tv.tv_sec isn't actually the timestamp!
                     			printf("latitude: %f, longitude: %f, altitude: %f, speed: %f, timestamp: %lf\n", gps_data.fix.latitude, gps_data.fix.longitude, gps_data.fix.altitude, gps_data.fix.speed, gps_data.fix.time); //EDIT: Replaced tv.tv_sec with gps_data.fix.time
             			} else {
                 			printf("no GPS data available\n");
@@ -410,4 +314,3 @@ int main(int argc, char *argv[]){
 	}
 	return (0);
 }
-

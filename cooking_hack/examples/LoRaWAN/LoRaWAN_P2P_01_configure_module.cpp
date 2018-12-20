@@ -301,22 +301,22 @@ void setup()
 
 }
 
-
-void loop() 
-{
-
-}
-
-
 //////////////////////////////////////////////
-// Main loop setup() and loop() declarations
+// Main setup() declarations
 //////////////////////////////////////////////
 
-int main (){
-	setup();
-	while(1){
-		loop();
+int main (int argc, char *argv[]){
+	if (argc != 5){										  
+		printf("Error en la entrada de argumentos.\n");
+		exit(1);
 	}
+	
+	frequency = atoi(argv[2]);
+    strncpy(spreading_factor, argv[1], 10);
+    strncpy(coding_rate, argv[4], 10);
+    bandwidth = atoi(argv[3]);
+    
+	setup();
 	return (0);
 }
 
