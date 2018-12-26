@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Index</title>
+    <style>
+		body {
+		  font-family: sans-serif;
+		  background: steelblue;
+		}
+		h2 {
+		  margin: 5px 0;
+		}
+		#wrapper {
+		  width: 600px;
+		  margin: 0 auto;
+		  background: white;
+		  padding: 10px 15px;
+		  border-radius: 10px;
+		}
+		input {
+		  margin: 5px 10px;
+		}
+		button {
+		  font-size: 18px;
+		  padding: 10px;
+		  margin: 20px 0;
+		  color: white;
+		  border: 0;
+		  border-radius: 10px;
+		  border-bottom: 3px solid #333;
+		}
+		#submit {
+		  background: green;
+		}
+		#reset {
+		  background: red;
+		}
+		#answer {
+		  border: 1px dashed #ccc;
+		  background: #eee;
+		  padding: 10px;
+		}
+    </style>
+  </head>
+  <body>
+  <script>
+	function changeParameters() {
+	  var choices = document.getElementsByTagName('input');
+	  var path = "/?";
+	  for (i=0; i<choices.length; i++) {
+	  	if (i == (choices.length - 1))
+	  		path = path + choices[i].name + "=" + choices[i].value;
+	  	else
+	  		path = path + choices[i].name + "=" + choices[i].value + "&";
+	  }
+	  window.location.href = path;   
+	}
+	
+	function showHeatmap() {
+	  window.location.href = "/dashboard";
+	}
+  </script>
+	<div id="wrapper">
+	  <h1>LoRa HeatMap IoT</h1>
+	  <p>Check the parameters and fill in all the fields</p>
+	  
+	  <form id="quiz">
+	    <!-- Question 0 -->
+	    <h2>IP Device</h2>
+	    <p>IP of the device to modify the configuration</p>
+	    <label><input type="text" name="ip" value="192.168.1.40"></label><br/>
+	    
+	    <!-- Question 1 -->
+	    <h2>Spreading Factor</h2>	    
+	    <p>Spreading Factor LoRa works on, for example, sf7 or sf8</p>
+	    <label><input type="text" name="sf" value="sf7"></label><br/>
+	
+	    <!-- Question 2 -->
+	    <h2>Frecuency</h2>
+	    <p>Frequency LoRa works on, for example, 871000000 or 868000000</p>
+	    <label><input type="text" name="fc" value="868000000"></label><br/>
+	    
+	    <!-- Question 3 -->
+	    <h2>Bandwidth</h2>
+	    <p>Bandwidth LoRa works on, for example, 125 or 126</p>
+	    <label><input type="text" name="bw" value="125"></label><br/>
+	    
+	    <!-- Question 4 -->
+	    <h2>Code rating</h2>
+	    <p>Code rating LoRa works on, for example, 4/5 or 4/7</p>
+	    <label><input type="text" name="cr" value="4/5"></label><br/>
+	    
+	    <button type="submit" id="submit" onclick="changeParameters()">Change parameters</button>
+	    <button type="reset" id="submit" onclick="showHeatmap()">Show HeatMap</button>
+	  </form>
+	</div>
+  </body>
+</html>

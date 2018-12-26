@@ -31,6 +31,8 @@
     "mongoose": "^4.1.2",
     "jade": "*",
     "mongo":"*",
-    "monk":"*"
+    "monk":"*",
+    "node-ansible": "^0.5.5",
+    "write-yaml": "^1.0.0"
   }
 }

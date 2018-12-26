@@ -1,0 +1,8 @@
+- hosts: "local"
+  vars:
+    fc: "{{ fc }}"
+    sf: "{{ sf }}"
+    bw: "{{ bw }}"
+    cr: "{{ cr }}"    
+  roles:
+  - { role: configure-raspi }

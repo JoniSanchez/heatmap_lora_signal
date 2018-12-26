@@ -1,0 +1,8 @@
+- name: "Configure Raspberry"
+  become: true
+  become_user: pi
+  shell: "{{ command }} && {{ make }} SPREADING_FACTOR={{ sf }} FRECUENCY={{ fc }} BANDWIDTH={{ bw }} CODING_RATE={{ cr }}"
+  register: output
+- name: "Print output"
+  debug:
+    msg: "{{ output }}"

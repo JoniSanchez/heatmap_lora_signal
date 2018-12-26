@@ -27,9 +27,12 @@ app.use(methodOverride(function (req, res) {
 // Import Models and controllers
 var router = express.Router();
 var data = require('./routes/data')
+var principal = require('./routes/principal')
 
 // API routes
-app.use('/', data)
+app.use('/dashboard', data)
+app.use('/', principal)
+
 
 // Start server
 app.listen(8082, function() {
