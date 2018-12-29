@@ -1,7 +1,7 @@
 # Heatmap LoRa signal
 
 Este proyecto se trata de un TFM, donde se obtiene como resultado un mapa de calor de la señal LoRa en cada punto geográfico.
-El hardware necesario es una raspberry con una antena LoRa para poder enviar mediante LoRa un paquete con la posición geografica de cada instante, este paquete es recibido por un router LoRa que reenvia la señal mediante MQTT a un broker. El broker sera leído por una aplicación en Nodejs que almacena los datas en una base de datos no relacional, MongoDB. Por último, otra aplicación Nodejs leerá la base de datos y generará el mapa de calor.
+El hardware necesario es una raspberry con una antena LoRa para poder enviar mediante LoRa un paquete con la posición geografica de cada instante, este paquete es recibido por un router LoRa que reenvía la señal mediante MQTT a un broker. El broker será leído por una aplicación en Nodejs que almacena los datos en una base de datos no relacional, MongoDB. Por último, otra aplicación Nodejs leerá la base de datos y generará el mapa de calor.
 
 ![principal](images/heatmap.PNG)
 
@@ -53,7 +53,7 @@ Se configura el forwarding de LoRa añadiendo la IP donde esta el broker de MQTT
 
 Y ver el tráfico LoRa.
 
-![principal](images/trafficLoRA.PNG)
+![principal](images/trafficLoRa.PNG)
 
 ## Docker Compose
 
