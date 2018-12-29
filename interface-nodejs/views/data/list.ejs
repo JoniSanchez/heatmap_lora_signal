@@ -13,7 +13,11 @@ including header content which is common for all pages
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
-          center: {lat: 41.153067, lng: -3.633310},
+         <% if (data) { %>
+          center: {lat: <%= data[1].latitude %>, lng: <%= data[1].longitude %>},
+         <% } else {%>
+         	center: {lat: 40.15308501180447, lng: -3.633329509364671}
+       	<% }%>
           mapTypeId: 'satellite'
         });
 
@@ -54,7 +58,10 @@ including header content which is common for all pages
       function changeOpacity() {
         heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
       }
-
+      
+      function changeParameters() {
+ 		window.location.href = "/";
+      }
       
       function getPoints() {
         return [
