@@ -3,6 +3,9 @@ services:
   mongo:
     build:
       context: ./mongo
+    volumes:
+      - /home/devops/database/mongo/db:/data/db
+      - /home/devops/database/mongo/configdb:/data/configdb
     ports:
       - "27017:27017"
   nodejs:
